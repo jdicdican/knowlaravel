@@ -41,6 +41,14 @@ If nothing goes wrong, you're all set.
     - username
     - password
     - user_type (1 => Admin, 2 => Author)
+    - timestamps
+
+- User Detail
+    - id
+    - user_id
+    - firstname
+    - lastname
+    - timestamps
 ```
 
 ##### Logic
