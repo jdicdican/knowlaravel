@@ -20,7 +20,7 @@ If nothing goes wrong, you're all set.
 #### Code Setup (The Blog)
 
 ##### Database schema
-
+```
 - Article
     - id
     - title
@@ -41,6 +41,7 @@ If nothing goes wrong, you're all set.
     - username
     - password
     - user_type (1 => Admin, 2 => Author)
+```
 
 ##### Logic
 
