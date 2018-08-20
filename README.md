@@ -42,7 +42,6 @@ If nothing goes wrong, you're all set.
     - firstname
     - lastname
     - timestamps
-    - softdeletes (deleted_at)
 ```
 
 ##### Logic
