@@ -29,13 +29,6 @@ If nothing goes wrong, you're all set.
     - timestamps (created_at, updated_at)
     - softdeletes (deleted_at)
 
-- Author
-    - id
-    - firstname
-    - lastname
-    - timestamps (created_at, updated_at)
-    - softdeletes (deleted_at)
-
 - User
     - id
     - username
@@ -43,12 +36,13 @@ If nothing goes wrong, you're all set.
     - user_type (1 => Admin, 2 => Author)
     - timestamps
 
-- User Detail
+- User Detail (Author & Admin Profile)
     - id
     - user_id
     - firstname
     - lastname
     - timestamps
+    - softdeletes (deleted_at)
 ```
 
 ##### Logic
