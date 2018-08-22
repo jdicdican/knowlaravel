@@ -12,3 +12,5 @@
 */
 
 Route::get('/', 'HomeController@index');
+Route::get('/user/login', 'LoginController@login');
+Route::post('/user/login', 'LoginController@postLogin');
