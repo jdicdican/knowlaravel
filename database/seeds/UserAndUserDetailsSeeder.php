@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserAndUserDetailsSeeder extends Seeder
 {
@@ -11,16 +12,23 @@ class UserAndUserDetailsSeeder extends Seeder
      */
     public function run()
     {
-        $id = DB::table('users')->insertGetId([
-            'username' => 'admin',
-            'password' => bcrypt('Passw0rd'),
-            'user_type' => 1
-        ]);
+        $population = array(
+            array('username' => 'admin', 'password' => 'welcome', 'user_type' => 1, 'firstname' => 'Bane', 'lastname' => 'Wolff'),
+            array('username' => 'john', 'password' => 'welcome', 'user_type' => 2, 'firstname' => 'John Gerald', 'lastname' => 'Agbayani'),
+            );
 
-        DB::table('user_details')->insert([
-            'user_id' => $id,
-            'firstname' => 'Bane',
-            'lastname' => 'Wolff',
-        ]);
+        foreach ($population as $person) {
+            $id = DB::table('users')->insertGetId([
+                'username' => $person['username'],
+                'password' => Hash::make($person['password']),
+                'user_type' => $person['user_type']
+            ]);
+    
+            DB::table('user_details')->insert([
+                'user_id' => $id,
+                'firstname' => $person['firstname'],
+                'lastname' => $person['lastname'],
+            ]);
+        }
     }
 }
