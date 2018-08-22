@@ -46,8 +46,15 @@ If nothing goes wrong, you're all set.
 
 ##### Logic
 
+##### Phase 1
 1. User can login (admin/author)
 2. An admin can do CRUD (Create/Read/Update/Delete) with authors
 3. An author can login
 4. An author can do CRUD with articles
 5. Guest can view articles without logging in
+
+##### Phase - 2 (Regular users)
+1. Regular user can create (register) an account using email (`user_type` = 3)
+2. Can **Save to bookmark** articles
+3. Can **Vote up**/**Vote down** articles
+4. Can do **comments** on articles
