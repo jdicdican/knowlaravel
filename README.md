@@ -53,8 +53,14 @@ If nothing goes wrong, you're all set.
 4. An author can do CRUD with articles
 5. Guest can view articles without logging in
 
-##### Phase - 2 (Regular users)
+##### Phase 2 (Authors)
+1. User can register as author (`user_type` = 2)
+2. Can CRUD articles
+3. Can view/edit profile
+
+##### Phase 3 (Regular users)
 1. Regular user can create (register) an account using email (`user_type` = 3)
-2. Can **Save to bookmark** articles
-3. Can **Vote up**/**Vote down** articles
-4. Can do **comments** on articles
+2. Can edit/view profile
+3. Can **Save to bookmark** articles
+4. Can **Vote up**/**Vote down** articles
+5. Can do **comments** on articles
