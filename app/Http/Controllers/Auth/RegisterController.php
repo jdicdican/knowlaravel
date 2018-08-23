@@ -73,11 +73,10 @@ class RegisterController extends Controller
             'user_type' => (($data['user_type'] == 'author') ? 2 : 3)
         ]);
 
-        $user_details = UserDetail::create([
-            'user_id' => $user['id'],
+        User::find($user['id'])->userDetail()->save(new UserDetail([
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname']
-        ]);
+        ]));
 
         return $user;
     }
