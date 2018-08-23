@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -39,5 +40,16 @@ class LoginController extends Controller
 
     public function username() {
         return 'username';
+    }
+
+    protected function attemptLogin(Request $request) {
+
+        $identity = $request->input('username');
+        $password = $request->input("password");
+
+        return \Auth::attempt([
+            filter_var($identity, FILTER_VALIDATE_EMAIL) ? 'email' : 'username' => $identity,
+            'password' => $password
+        ]);
     }
 }

@@ -17,8 +17,8 @@ class CreateUserDetailsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('firstname', 255);
-            $table->string('lastname', 255);
+            $table->string('firstname', 255)->nullable();
+            $table->string('lastname', 255)->nullable();
             $table->timestamps();
         });
     }
