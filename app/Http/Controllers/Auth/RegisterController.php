@@ -56,6 +56,16 @@ class RegisterController extends Controller
         ]);
     }
 
+    /**
+     * Call the register method of the parent trait.
+     * 
+     * Type-cast $request to Register in order to trigger
+     * the validation.
+     * 
+     * @param  App\Http\Requests\Register  $request
+     * @return \Illuminate\Http\Response
+     */
+
     public function register(Register $request)
     {
         return $this->traitRegister($request);
