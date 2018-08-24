@@ -73,7 +73,7 @@ class RegisterController extends Controller
             'user_type' => (($data['user_type'] == 'author') ? 2 : 3)
         ]);
 
-        User::find($user['id'])->userDetail()->save(new UserDetail([
+        $user->userDetail()->save(new UserDetail([
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname']
         ]));
