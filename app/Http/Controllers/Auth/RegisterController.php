@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserDetail;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Register;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -22,9 +23,7 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers {
-        register as protected traitRegister;
-    }
+    use RegistersUsers;
 
     /**
      * Where to redirect users after registration.
@@ -43,32 +42,23 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            //
-        ]);
-    }
-
-    /**
-     * Call the register method of the parent trait.
-     * 
+    /** 
      * Typecast $request to Register in order to trigger
      * the validation.
+     * 
+     * Logic taken from parent trait Illuminate\Foundation\Auth\RegistersUsers
      * 
      * @param  App\Http\Requests\Register  $request
      * @return \Illuminate\Http\Response
      */
-
     public function register(Register $request)
     {
-        return $this->traitRegister($request);
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
     }
 
     /**
