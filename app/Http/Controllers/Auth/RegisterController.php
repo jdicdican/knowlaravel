@@ -59,7 +59,7 @@ class RegisterController extends Controller
     /**
      * Call the register method of the parent trait.
      * 
-     * Type-cast $request to Register in order to trigger
+     * Typecast $request to Register in order to trigger
      * the validation.
      * 
      * @param  App\Http\Requests\Register  $request
