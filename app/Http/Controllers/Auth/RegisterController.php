@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Models\UserDetail;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Register;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -40,22 +42,23 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+    /** 
+     * Typecast $request to Register in order to trigger
+     * the validation.
+     * 
+     * Logic taken from parent trait Illuminate\Foundation\Auth\RegistersUsers
+     * 
+     * @param  App\Http\Requests\Register  $request
+     * @return \Illuminate\Http\Response
      */
-    protected function validator(array $data)
+    public function register(Register $request)
     {
-        return Validator::make($data, [
-            'firstname' => 'nullable|string|max:255',
-            'lastname' => 'nullable|string|max:255',
-            'username' => 'nullable|alpha_num|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'user_type' => 'required|string',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
     }
 
     /**
