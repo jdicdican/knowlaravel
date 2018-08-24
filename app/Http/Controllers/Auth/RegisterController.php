@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Models\UserDetail;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Register;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -21,7 +22,9 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    use RegistersUsers {
+        register as protected traitRegister;
+    }
 
     /**
      * Where to redirect users after registration.
@@ -49,13 +52,13 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'firstname' => 'nullable|string|max:255',
-            'lastname' => 'nullable|string|max:255',
-            'username' => 'nullable|alpha_num|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'user_type' => 'required|string',
-            'password' => 'required|string|min:6|confirmed',
+            //
         ]);
+    }
+
+    public function register(Register $request)
+    {
+        return $this->traitRegister($request);
     }
 
     /**
