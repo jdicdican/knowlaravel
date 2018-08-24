@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    
                     Welcome
                     @if(session('user')['user_type'] == 1)
                         Admin
