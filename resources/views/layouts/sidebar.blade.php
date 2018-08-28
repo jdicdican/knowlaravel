@@ -3,7 +3,7 @@
 
     <div class="panel-body">
         <ul class="nav nav-pills nav-stacked">
-            <li class="{{ ($active == 'dashboard') ? 'active' : '' }}"><a href="{{route('dashboard')}}">Home</a></li>
+            <li class="{{ ($active == 'dashboard') ? 'active' : '' }}"><a href="{{route('index')}}">Home</a></li>
             
             @if(session('user')['user_type'] == 2)
                 <li class="{{ ($active == 'published') ? 'active' : '' }}"><a href="{{route('published')}}">Blog Posts</a></li>
