@@ -30,3 +30,9 @@ $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('dashboard', 'HomeController@index')->name('dashboard');
+Route::get('dashboard/articles/published', 'DashboardController@published')->name('published');
+Route::get('dashboard/articles/drafts', 'DashboardController@drafts')->name('drafts');
+Route::get('dashboard/articles/create', 'ArticlesController@create')->name('create-article');
+Route::post('dashboard/articles/save/{id?}', 'ArticlesController@save')->name('save-article');
+Route::get('dashboard/articles/delete/{id}', 'ArticlesController@delete')->name('delete-article');
+Route::get('dashboard/articles/update/{id}', 'ArticlesController@update')->name('update-article');

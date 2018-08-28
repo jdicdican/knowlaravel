@@ -30,4 +30,8 @@ class User extends Authenticatable
     public function userDetail() {
         return $this->hasOne("App\Models\UserDetail");
     }
+
+    public function articles() {
+        return $this->hasMany('App\Models\Article', 'author_id', 'id');
+    }
 }
