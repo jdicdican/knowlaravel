@@ -12,8 +12,8 @@
 
                 <div class="panel-body">
                     <ul class="nav nav-tabs nav-justified">
-                        <li class="active"><a href="{{route('published')}}">Published</a></li>
-                        <li><a href="#">Drafts</a></li>
+                        <li class="{{ $type == 'published' ? 'active' : '' }}"><a href="{{route('published')}}">Published</a></li>
+                        <li class="{{ $type == 'drafts' ? 'active' : '' }}"><a href="{{route('drafts')}}">Drafts</a></li>
                     </ul>
 
                     <ul class="list-group">

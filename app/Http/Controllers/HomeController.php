@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         session(['user' => Auth::user()]);
-        return view('home', ['allArticles' => Article::all()->sortByDesc('id')]);
+        return view('home', ['allArticles' => Article::whereNotNull('published_at')->get()->sortByDesc('id')]);
     }
 
     public function redirectIndex()

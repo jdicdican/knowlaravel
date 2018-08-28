@@ -10,7 +10,7 @@ class ArticlesController extends Controller
 {
     public function index()
     {
-        $articles = Article::all();
+        $articles = Article::whereNotNull('published_at');
 
         return $articles;
     }
@@ -19,18 +19,58 @@ class ArticlesController extends Controller
     {
         \Auth::user()->user_type != 2 ? abort(403) : '';
 
-        return view('articles.add');
+        return view('articles.edit')->with([
+            'method' => 'create'
+        ]);
     }
 
-    public function save(ArticleSave $request)
+    public function save(ArticleSave $request, $id = NULL)
     {
         \Auth::user()->user_type != 2 ? abort(403) : '';
         
-        \Auth::user()->articles()->create([
+        $article = \Auth::user()->articles()->where('id', $id);
+        $date = $request['is_draft'][0] == 1 ? NULL : date('Y-m-d H:i:s');
+        $data = [
             'title' => $request['title'],
-            'body' => $request['body']
-        ]);
+            'body' => $request['body'],
+            'published_at' => $date
+        ];
+
+        if ($id == NULL) { // create new article
+            \Auth::user()->articles()->create($data);
+        } else if ($id != NULL) {
+            if($article) { // if user owns the article... update the article
+                $article->update($data);
+            }
+        }
 
         return redirect()->route('published');
+    }
+
+    public function delete($articleID) {
+        $article = Article::find($articleID);
+
+        if($article->author->id == \Auth::user()->id) {
+            $article->delete();
+
+            return redirect()->back();
+        } else {
+            abort(403);
+        }
+    }
+
+    public function update($articleID) {
+        $article = Article::find($articleID);
+
+        if($article->author->id == \Auth::user()->id) {
+            return view('articles.edit')->with([
+                'method' => 'update',
+                'id' => $article->id,
+                'title' => $article->title,
+                'body' => $article->body
+            ]);
+        } else {
+            abort(403);
+        }
     }
 }
