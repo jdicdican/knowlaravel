@@ -36,12 +36,6 @@ You are logged in!
                 @foreach([5,6,7,8,9,10] as $val)
                     <option value="{{ $val }}" {{ $items_per_page == $val ? 'selected' : '' }}>{{ $val }}</option>
                 @endforeach
-<!--                 
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option> -->
             </select>
         </div>
         </form>
