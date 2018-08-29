@@ -12,7 +12,7 @@ class DashboardController extends Controller
 
         return view('articles.owned', [
             'type' => 'published',
-            'articles' => \Auth::user()->articles()->whereNotNull('published_at')->get()->sortByDesc('id')]);
+            'articles' => \Auth::user()->articles()->published()->get()->sortByDesc('id')]);
     }
 
     public function drafts() {
@@ -20,6 +20,6 @@ class DashboardController extends Controller
 
         return view('articles.owned', [
             'type' => 'drafts',
-            'articles' => \Auth::user()->articles()->whereNull('published_at')->get()->sortByDesc('id')]);
+            'articles' => \Auth::user()->articles()->drafts()->get()->sortByDesc('id')]);
     }
 }

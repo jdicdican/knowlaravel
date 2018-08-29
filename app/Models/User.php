@@ -27,11 +27,13 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function userDetail() {
+    public function userDetail()
+    {
         return $this->hasOne("App\Models\UserDetail");
     }
 
-    public function articles() {
+    public function articles()
+    {
         return $this->hasMany('App\Models\Article', 'author_id', 'id');
     }
 }
