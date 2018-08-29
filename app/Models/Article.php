@@ -15,4 +15,14 @@ class Article extends Model
     {
         return $this->belongsTo('App\Models\User', 'author_id', 'id');
     }
+
+    public function scopePublished($query)
+    {
+        return $query->whereNotNull('published_at');
+    }
+
+    public function scopeDrafts($query)
+    {
+        return $query->whereNull('published_at');
+    }
 }

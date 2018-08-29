@@ -26,8 +26,8 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $count = isset($request['items_per_page']) ? $request['items_per_page'] : 5;
-        $articles = Article::whereNotNull('published_at')->orderBy('published_at', 'desc')->paginate($count);
+        $count = $request->get('items_per_page', 5);
+        $articles = Article::published()->orderBy('published_at', 'desc')->paginate($count);
         $articles->withPath('dashboard?items_per_page='.$count);
         session(['user' => Auth::user()]);
         return view('home', [
