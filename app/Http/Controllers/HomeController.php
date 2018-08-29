@@ -29,10 +29,25 @@ class HomeController extends Controller
         $count = $request->get('items_per_page', 5);
         $articles = Article::published()->orderBy('published_at', 'desc')->paginate($count);
         $articles->withPath('dashboard?items_per_page='.$count);
+        $likers =  Article::withCount('likers')->orderBy('likers_count', 'desc')->paginate($count);
         session(['user' => Auth::user()]);
         return view('home', [
             'articles' => $articles,
-            'items_per_page' => $count
+            'items_per_page' => $count,
+            'type' => 'dashboard'
+        ]);
+    }
+
+    public function mostLiked(Request $request)
+    {
+        $count = $request->get('items_per_page', 5);
+        $articles = Article::withCount('likers')->orderBy('likers_count', 'desc')->paginate($count);
+        $articles->withPath('most_liked?items_per_page='.$count);
+        session(['user' => Auth::user()]);
+        return view('home', [
+            'articles' => $articles,
+            'items_per_page' => $count,
+            'type' => 'most_liked'
         ]);
     }
 

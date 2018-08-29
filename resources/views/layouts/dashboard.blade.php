@@ -4,47 +4,14 @@
     </div>
 @endif
 
-Welcome
-@if(session('user')['user_type'] == 1)
-    Admin
-@elseif(session('user')['user_type'] == 2)
-    Author
+<?php
+    $user_type = session('user')['user_type'];
+    $user_mode = $user_type == 1 ? 'Admin' : $user_type == 2 ? 'Author' : 'Regular';
+    echo "<p>Welcome ".$user_mode."! You are logged in.</p>";
+?>
+
+<!-- Display views/articles/all if user is author or regular all data from 
+     the ancestor view/s are retained -->
+@if (($user_type == 2) || ($user_type == 3))
+    @include('articles.all')
 @endif
-!
-
-You are logged in!
-
-<script language='javascript'>
-      $(function(){
-          // bind change event to select
-          $('#paginator').bind('change', function () {
-              var url = '/dashboard/?items_per_page='+$(this).val();
-              if (url) {
-                  window.location = url; 
-              }
-              return false;
-          });
-        });
-</script>
-
-<div class="row">
-    <div class="col-lg-4">
-        <form method="GET" action="{{ route('dashboard') }}">
-        <div class="form-group">
-            <label for="paginator">Items per page</label>
-            <select class="form-control" id="paginator" name="items_per_page">
-                @foreach([5,6,7,8,9,10] as $val)
-                    <option value="{{ $val }}" {{ $items_per_page == $val ? 'selected' : '' }}>{{ $val }}</option>
-                @endforeach
-            </select>
-        </div>
-        </form>
-    </div>
-</div>
-{{ $articles->links() }}
-<ul class="list-group">
-    @foreach ($articles as $article)
-        @include("articles.article_item", ["article" => $article])
-    @endforeach
-</ul>
-{{ $articles->links() }}
