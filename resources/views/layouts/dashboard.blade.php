@@ -14,18 +14,36 @@ Welcome
 
 You are logged in!
 
+<script language='javascript'>
+      $(function(){
+          // bind change event to select
+          $('#paginator').bind('change', function () {
+              var url = '/dashboard/?items_per_page='+$(this).val();
+              if (url) {
+                  window.location = url; 
+              }
+              return false;
+          });
+        });
+</script>
+
 <div class="row">
     <div class="col-lg-4">
         <form method="GET" action="{{ route('dashboard') }}">
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon">Items Per Page</span>
-                    <input type="text" value="{{ isset($items_per_page) ? $items_per_page : 5 }}" class="form-control" id="items_per_page" name="items_per_page">
-                    <div class="input-group-btn">
-                        <input type="submit" class="btn btn-primary" value="SET"/>
-                    </div>
-                </div>
-            </div>
+        <div class="form-group">
+            <label for="paginator">Items per page</label>
+            <select class="form-control" id="paginator" name="items_per_page">
+                @foreach([5,6,7,8,9,10] as $val)
+                    <option value="{{ $val }}" {{ $items_per_page == $val ? 'selected' : '' }}>{{ $val }}</option>
+                @endforeach
+<!--                 
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option> -->
+            </select>
+        </div>
         </form>
     </div>
 </div>

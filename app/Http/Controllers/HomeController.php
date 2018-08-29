@@ -34,7 +34,6 @@ class HomeController extends Controller
             'articles' => $articles,
             'items_per_page' => $count
         ]);
-            // 'allArticles' => Article::whereNotNull('published_at')->get()->sortByDesc('id')]);
     }
 
     public function redirectToIndex()
