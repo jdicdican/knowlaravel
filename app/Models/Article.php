@@ -30,26 +30,4 @@ class Article extends Model
     {
         return $this->belongsToMany('App\Models\User', 'user_likes_article');
     }
-
-    public function likersCount()
-    {
-        return $this->likers()
-            // ->selectRaw('article_id, count(user_id) as likes')
-            // ->selectRaw('article_id count(*) as aggregate')
-            // ->groupBy('article_id')
-            ;
-    }
-
-    public static function likes()
-    {
-        $allArticles = Article::all();
-        $storage = array();
-
-        foreach($allArticles as $article) {
-            $storage[$article->id] = [
-                'object' => $article,
-                'likers' => $article->likers->count()];
-        }
-        return $storage;
-    }
 }
