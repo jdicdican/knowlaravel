@@ -77,5 +77,17 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script language='javascript'>
+    $(function(){
+        $('#paginator').bind('change', function () {
+            console.log('change');
+            var url = window.location.pathname+'?items_per_page='+$(this).val();
+            if (url) {
+                window.location = url; 
+            }
+            return false;
+        });
+    });
+</script>
 </body>
 </html>
