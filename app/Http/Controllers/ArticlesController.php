@@ -50,7 +50,7 @@ class ArticlesController extends Controller
     public function delete($articleID) {
         $article = Article::find($articleID);
 
-        if($article->author->id == \Auth::user()->id) {
+        if(\Auth::user()->articles->contains($articleID)) {
             $article->delete();
 
             return redirect()->back();
@@ -62,7 +62,7 @@ class ArticlesController extends Controller
     public function update($articleID) {
         $article = Article::find($articleID);
 
-        if($article->author->id == \Auth::user()->id) {
+        if(\Auth::user()->articles->contains($articleID)) {
             return view('articles.edit')->with([
                 'method' => 'update',
                 'id' => $article->id,
@@ -72,5 +72,14 @@ class ArticlesController extends Controller
         } else {
             abort(403);
         }
+    }
+
+    public function like($articleID) {
+        if (\Auth::user()->articlesLiked->contains($articleID)) {
+            \Auth::user()->articlesLiked()->detach($articleID);
+        } else {
+            \Auth::user()->articlesLiked()->attach($articleID);
+        }
+        return redirect()->back();
     }
 }

@@ -25,4 +25,9 @@ class Article extends Model
     {
         return $query->whereNull('published_at');
     }
+
+    public function likers()
+    {
+        return $this->belongsToMany('App\Models\User', 'user_likes_article');
+    }
 }
