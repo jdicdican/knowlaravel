@@ -12,7 +12,9 @@ class ArticlesController extends Controller
     {
         $articles = Article::whereNotNull('published_at');
 
-        return $articles;
+        return view('articles.index', [
+           'articles' => $articles->toArray()
+       ]);
     }
 
     public function create()
@@ -27,7 +29,7 @@ class ArticlesController extends Controller
     public function save(ArticleSave $request, $id = NULL)
     {
         \Auth::user()->user_type != 2 ? abort(403) : '';
-        
+
         $article = \Auth::user()->articles()->where('id', $id);
         $date = $request['is_draft'][0] == 1 ? NULL : date('Y-m-d H:i:s');
         $data = [

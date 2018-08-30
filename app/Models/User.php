@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password', 'user_type'
+        'username', 'email', 'password', 'user_type',
     ];
 
     /**
@@ -40,5 +40,9 @@ class User extends Authenticatable
     public function articlesLiked()
     {
         return $this->belongsToMany('App\Models\Article', 'user_likes_article');
+    }
+    public function isAdmin()
+    {
+        return $this->user_type==1;
     }
 }

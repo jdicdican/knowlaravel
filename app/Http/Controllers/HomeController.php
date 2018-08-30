@@ -26,15 +26,19 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $count = $request->get('items_per_page', 5);
-        $articles = Article::published()->orderBy('published_at', 'desc')->paginate($count);
-        $articles->withPath('dashboard?items_per_page='.$count);
         session(['user' => Auth::user()]);
-        return view('home', [
-            'articles' => $articles,
-            'items_per_page' => $count,
-            'type' => 'dashboard'
-        ]);
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('admin');
+        } else {
+            $count = $request->get('items_per_page', 5);
+            $articles = Article::published()->orderBy('published_at', 'desc')->paginate($count);
+            $articles->withPath('dashboard?items_per_page='.$count);
+            return view('home', [
+                'articles' => $articles,
+                'items_per_page' => $count,
+                'type' => 'dashboard'
+            ]);
+        }
     }
 
     public function mostLiked(Request $request)
