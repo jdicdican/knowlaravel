@@ -16,8 +16,6 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        \Auth::user()->mustBe([User::AUTHOR]);
-
         return view('articles.edit')->with([
             'method' => 'create'
         ]);
@@ -33,8 +31,6 @@ class ArticlesController extends Controller
      */
     public function save(ArticleSave $request, $articleID = NULL)
     {
-        \Auth::user()->mustBe([User::AUTHOR]);
-        
         $article = \Auth::user()->articles()->where('id', $articleID);
         $date = $request['is_draft'][0] == 1 ? NULL : date('Y-m-d H:i:s');
         $data = [

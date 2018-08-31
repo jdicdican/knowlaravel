@@ -41,7 +41,6 @@ class ArticlesNavigationController extends Controller
      */
     private function articles($type, $withPath_url, $order_by, $items_per_page)
     {
-        \Auth::user()->userDetail();
         $articles = Article::published()->withCount('likers')->orderBy($order_by, 'desc')->paginate($items_per_page);
         $articles->withPath($withPath_url.'?items_per_page='.$items_per_page);
 
@@ -59,8 +58,6 @@ class ArticlesNavigationController extends Controller
      */
     public function published()
     {
-        \Auth::user()->mustBe([User::AUTHOR]);
-
         return view('articles.authored', [
             'type' => 'published',
             'articles' => \Auth::user()->articles()->published()->withCount('likers')->get()->sortByDesc('id')]);
@@ -73,8 +70,6 @@ class ArticlesNavigationController extends Controller
      */
     public function drafts()
     {
-        \Auth::user()->mustBe([User::AUTHOR]);
-
         return view('articles.authored', [
             'type' => 'drafts',
             'articles' => \Auth::user()->articles()->drafts()->get()->sortByDesc('id')]);
