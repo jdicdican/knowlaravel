@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'HomeController@index')->name('index');
+Route::get('/', 'DashboardController@redirectToAppropriateRoute')->name('index');
 
 // Auth::routes();
 // Authentication Routes...
@@ -29,13 +29,15 @@ $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
-Route::get('dashboard', 'HomeController@index')->name('dashboard');
-Route::get('dashboard/most_liked', 'HomeController@mostLiked')->name('most_liked');
+Route::get('articles', 'ArticlesNavigationController@index')->name('articles');
+Route::get('articles/most_liked', 'ArticlesNavigationController@mostLiked')->name('most_liked');
+Route::get('articles/like/{id}', 'ArticlesController@like')->name('like-article');
 
-Route::get('dashboard/articles/published', 'DashboardController@published')->name('published');
-Route::get('dashboard/articles/drafts', 'DashboardController@drafts')->name('drafts');
-Route::get('dashboard/articles/create', 'ArticlesController@create')->name('create-article');
-Route::post('dashboard/articles/save/{id?}', 'ArticlesController@save')->name('save-article');
-Route::get('dashboard/articles/delete/{id}', 'ArticlesController@delete')->name('delete-article');
-Route::get('dashboard/articles/update/{id}', 'ArticlesController@update')->name('update-article');
-Route::get('dashboard/articles/like/{id}', 'ArticlesController@like')->name('like-article');
+Route::group( [ 'middleware' => 'author' ], function () {
+    Route::get('articles/published', 'ArticlesNavigationController@published')->name('published');
+    Route::get('articles/drafts', 'ArticlesNavigationController@drafts')->name('drafts');
+    Route::get('articles/create', 'ArticlesController@create')->name('create-article');
+    Route::post('articles/save/{id?}', 'ArticlesController@save')->name('save-article');
+    Route::get('articles/delete/{id}', 'ArticlesController@delete')->name('delete-article');
+    Route::get('articles/update/{id}', 'ArticlesController@update')->name('update-article');
+ });

@@ -4,22 +4,38 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
-    public function published() {
-        \Auth::user()->user_type != 2 ? abort(403) : '';
-
-        return view('articles.owned', [
-            'type' => 'published',
-            'articles' => \Auth::user()->articles()->published()->get()->sortByDesc('id')]);
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
     }
 
-    public function drafts() {
-        \Auth::user()->user_type != 2 ? abort(403) : '';
-
-        return view('articles.owned', [
-            'type' => 'drafts',
-            'articles' => \Auth::user()->articles()->drafts()->get()->sortByDesc('id')]);
+    /**
+     * Redirects from the home url to the appropriate dashboard url
+     * depending on the user's user_type
+     * 
+     * @return Illuminate\Http\RedirectResponse
+     */
+    public function redirectToAppropriateRoute()
+    {
+        session(['user' => \Auth::user()]);
+        
+        switch (\Auth::user()->user_type) {
+            case User::ADMIN:
+                // return redirect()->route('route-to-admin-dashboard');
+                break;
+            case User::AUTHOR:
+            case User::REGULAR:
+                return redirect()->route('articles');
+                break;
+        }
     }
 }
