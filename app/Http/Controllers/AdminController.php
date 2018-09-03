@@ -60,6 +60,7 @@ class AdminController extends Controller
 
         $author = User::find($id);
         $author->articles()->delete();
+        $author->userDetail()->delete();
         $author->delete();
 
         return view('admin.delete', [
