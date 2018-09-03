@@ -21,16 +21,16 @@ class DashboardController extends Controller
     /**
      * Redirects from the home url to the appropriate dashboard url
      * depending on the user's user_type
-     * 
+     *
      * @return Illuminate\Http\RedirectResponse
      */
     public function redirectToAppropriateRoute()
     {
         session(['user' => \Auth::user()]);
-        
+
         switch (\Auth::user()->user_type) {
             case User::ADMIN:
-                // return redirect()->route('route-to-admin-dashboard');
+                return redirect()->route('admin');
                 break;
             case User::AUTHOR:
             case User::REGULAR:

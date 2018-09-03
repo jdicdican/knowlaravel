@@ -24,13 +24,14 @@ class ArticlesController extends Controller
     /**
      * Creates a new article if $articleID is NULL; updates the existing
      * article if otherwise
-     * 
+     *
      * @param App\Http\Requests\ArticleSave $request
      * @param integer $articleID
      * @return Illuminate\Http\RedirectResponse
      */
     public function save(ArticleSave $request, $articleID = NULL)
     {
+
         $article = \Auth::user()->articles()->where('id', $articleID);
         $date = $request['is_draft'][0] == 1 ? NULL : date('Y-m-d H:i:s');
         $data = [
@@ -50,7 +51,7 @@ class ArticlesController extends Controller
 
     /**
      * Deletes the article with the id $articleID
-     * 
+     *
      * @param integer $articleID
      * @return Illuminate\Http\RedirectResponse
      */
@@ -93,7 +94,7 @@ class ArticlesController extends Controller
     /**
      * Likes the article with $articleID; unlikes if the user already
      * liked it
-     * 
+     *
      * @param integer $articleID
      * @return Illuminate\Http\RedirectResponse
      */

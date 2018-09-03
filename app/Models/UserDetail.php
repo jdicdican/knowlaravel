@@ -18,7 +18,7 @@ class UserDetail extends Model
     /**
      * Gets the user detail's user/owner
      *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo 
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user() {
         return $this->belongsTo("App\Models\User");
