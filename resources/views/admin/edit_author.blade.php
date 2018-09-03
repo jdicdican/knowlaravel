@@ -22,9 +22,7 @@
                         First name: <input type="text" name="firstname" value="{{$author['user_detail']['firstname']}}"><br>
                         Last name: <input type="text" name="lastname" value="{{$author['user_detail']['lastname']}}"><br><br>
                     <input class="btn btn-success btn-sm" type="submit" name="edit" value="Update">
-                    <a href="{{ route('authors.index') }}">
-                        <button class="btn btn-primary btn-sm">Cancel</button>
-                    </a>
+                    <a href="{{ route('authors.index') }}"><button class="btn btn-primary btn-sm">Cancel</button></a>
                 </form>
                 </div>
                 </div>

@@ -10,10 +10,6 @@ use Illuminate\Http\RedirectResponse;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth.admin');
-    }
     public function index()
     {
         $author = User::all();

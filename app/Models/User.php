@@ -29,7 +29,7 @@ class User extends Authenticatable
 
     /**
      * Constant definition of the user roles
-     * 
+     *
      * @var int ADMIN   Administrator of the page
      * @var int AUTHOR  Author of articles
      * @var int REGULAR Regular browser of the website
@@ -39,7 +39,7 @@ class User extends Authenticatable
     /**
      * Checks if the current user is of type $roles. Aborts the application
      * with error 403 if the check fails.
-     * 
+     *
      * Constant values of $roles are defined in App\Models\User
      *
      * @param array $roles
@@ -55,7 +55,7 @@ class User extends Authenticatable
     /**
      * Gets the user's user detail
      *
-     * @return Illuminate\Database\Eloquent\Relations\HasOne 
+     * @return Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function userDetail()
     {
@@ -65,7 +65,7 @@ class User extends Authenticatable
     /**
      * Gets the articles authored by the user
      *
-     * @return Illuminate\Database\Eloquent\Relations\HasMany 
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function articles()
     {
@@ -75,12 +75,13 @@ class User extends Authenticatable
     /**
      * Gets the articles that the user liked
      *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany 
+     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function articlesLiked()
     {
         return $this->belongsToMany('App\Models\Article', 'user_likes_article');
     }
+
     public function isAdmin()
     {
         return $this->user_type==1;

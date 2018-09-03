@@ -18,7 +18,7 @@ class Article extends Model
     /**
      * Gets the article's author
      *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo 
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function author()
     {
@@ -28,7 +28,7 @@ class Article extends Model
     /**
      * Gets the users who likes the article
      *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany 
+     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function likers()
     {

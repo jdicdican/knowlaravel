@@ -12,15 +12,17 @@
 */
 
 // Admin Routes
-Route::get('admin/dashboard', 'AdminController@index')->name('admin');
-Route::get('authors', 'AdminController@getAuthors')->name('authors.index');
-Route::get('authors/{id}', 'AdminController@showAuthor')->name('authors.view');
-Route::get('authors/edit/{id}', 'AdminController@showEditAuthor')->name('authors.edit');
-Route::get('authors/confirm_delete/{id}', 'AdminController@deletePopup')->name('authors.confirm_delete');
-Route::get('authors/delete/{id}', 'AdminController@deleteAuthor')->name('authors.delete');
-Route::put('authors/update/{id}', 'AdminController@updateAuthor')->name('authors.update');
-Route::get('/', 'DashboardController@redirectToAppropriateRoute')->name('index');
+Route::group ( [ 'middleware' => 'auth.admin' ], function () {
+    Route::get('admin/dashboard', 'AdminController@index')->name('admin');
+    Route::get('authors', 'AdminController@getAuthors')->name('authors.index');
+    Route::get('authors/{id}', 'AdminController@showAuthor')->name('authors.view');
+    Route::get('authors/edit/{id}', 'AdminController@showEditAuthor')->name('authors.edit');
+    Route::get('authors/confirm_delete/{id}', 'AdminController@deletePopup')->name('authors.confirm_delete');
+    Route::get('authors/delete/{id}', 'AdminController@deleteAuthor')->name('authors.delete');
+    Route::put('authors/update/{id}', 'AdminController@updateAuthor')->name('authors.update');
+});
 
+Route::get('/', 'DashboardController@redirectToAppropriateRoute')->name('index');
 // Auth::routes();
 // Authentication Routes...
 $this->get('user/login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -48,4 +50,4 @@ Route::group( [ 'middleware' => 'author' ], function () {
     Route::post('articles/save/{id?}', 'ArticlesController@save')->name('save-article');
     Route::get('articles/delete/{id}', 'ArticlesController@delete')->name('delete-article');
     Route::get('articles/update/{id}', 'ArticlesController@update')->name('update-article');
- });
+});
