@@ -37,22 +37,6 @@ class User extends Authenticatable
     const ADMIN = 1, AUTHOR = 2, REGULAR = 3;
 
     /**
-     * Checks if the current user is of type $roles. Aborts the application
-     * with error 403 if the check fails.
-     *
-     * Constant values of $roles are defined in App\Models\User
-     *
-     * @param array $roles
-     * @return void
-     */
-    public function mustBe($roles)
-    {
-        if(!in_array($this->user_type, $roles)) {
-           abort(403);
-        }
-    }
-
-    /**
      * Gets the user's user detail
      *
      * @return Illuminate\Database\Eloquent\Relations\HasOne
@@ -85,5 +69,15 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->user_type==1;
+    }
+    
+    /**
+     * Gets the comments made by the user
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasMany 
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
     }
 }

@@ -33,6 +33,8 @@ class DashboardController extends Controller
                 return redirect()->route('admin');
                 break;
             case User::AUTHOR:
+                return redirect()->route('published');
+                break;
             case User::REGULAR:
                 return redirect()->route('articles');
                 break;

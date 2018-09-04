@@ -15,8 +15,11 @@ class AuthenticateAuthor
      */
     public function handle($request, Closure $next)
     {
-        if (\Auth::user()->user_type != 2) {
+        if(\Auth::user() == null) {
             return redirect()->route('index');
+            if (\Auth::user()->user_type != 2) {
+                return redirect()->route('index');
+            }
         }
         
         return $next($request);

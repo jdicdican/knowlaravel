@@ -26,6 +26,16 @@ class Article extends Model
     }
 
     /**
+     * Gets the comments under the article
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo 
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    /**
      * Gets the users who likes the article
      *
      * @return Illuminate\Database\Eloquent\Relations\BelongsToMany

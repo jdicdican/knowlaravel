@@ -16,38 +16,16 @@ class ArticlesNavigationController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->articles('all', 'articles', 'published_at', $request->get('items_per_page', 5));
-    }
+        $sort_by = $request->get('sort_by', 'published_at');
+        $paginate = $request->get('items_per_page', 5);
 
-    /**
-     * Show all of the most liked, published articles
-     *  
-     * @param Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function mostLiked(Request $request)
-    {
-        return $this->articles('most_liked', 'most_liked', 'likers_count', $request->get('items_per_page', 5));
-    }
-
-    /**
-     * Returns a view showing all articles as defined by the parameters
-     *
-     * @param string $type [ all | most_liked ] The type of view
-     * @param string $withPath_url Url of the view
-     * @param string $order_by Column to be used to sort the results
-     * @param integer $items_per_page Pagination item numbers
-     * @return \Illuminate\Http\Response
-     */
-    private function articles($type, $withPath_url, $order_by, $items_per_page)
-    {
-        $articles = Article::published()->withCount('likers')->orderBy($order_by, 'desc')->paginate($items_per_page);
-        $articles->withPath($withPath_url.'?items_per_page='.$items_per_page);
+        $articles = Article::published()->withCount('likers')->orderBy($sort_by, 'desc')->paginate($paginate);
+        $articles->withPath('home/?items_per_page='.$paginate.'&sort_by='.$sort_by);
 
         return view('articles.published', [
-            'articles' => $articles,
-            'items_per_page' => $items_per_page,
-            'type' => $type
+            'c_articles' => $articles,
+            'c_paginate' => $paginate,
+            'c_sort_by' => $sort_by
         ]);
     }
 

@@ -11,83 +11,95 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="{{ asset('css/open-iconic.css') }}" rel="stylesheet">
+    
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endif
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        @yield('content')
+        <div class="container">
+            @include('layouts.navbar')
+            @yield('content')
+        </div>
+        
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <!-- <script src="{{ asset('js/app.js') }}"></script> -->
+    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script language='javascript'>
-    $(function(){
-        $('#paginator').bind('change', function () {
-            console.log('change');
-            var url = window.location.pathname+'?items_per_page='+$(this).val();
-            if (url) {
-                window.location = url; 
-            }
-            return false;
+        $(function(){
+            $('#paginator').bind('change', function () {
+                var url = window.location.pathname+'?items_per_page='+$('#paginator').val()+
+                                                   '&sort_by='+$('#sort_by').val();
+                if (url) {
+                    window.location = url; 
+                }
+                return false;
+            });
+
+            $('#sort_by').bind('change', function () {
+                var url = window.location.pathname+'?items_per_page='+$('#paginator').val()+
+                                                   '&sort_by='+$('#sort_by').val();
+                if (url) {
+                    window.location = url; 
+                }
+                return false;
+            });
+
+            $('#submit-comment').bind('click', function () {
+                $.post('{{ route('comment-article') }}', { '_token': '{{ csrf_token() }}', 'article_id': $('#article_id').val(), 'comment': $('#comment').val() })
+                    .done(function() {
+                        location.reload();
+                    })
+                    .fail(function() {
+                        alert('An error occured when trying to comment.')
+                    });
+                return false;
+            });
+
+            $('#submit-like').bind('click', function () {
+                $.post('{{ route('like-article') }}', { '_token': '{{ csrf_token() }}', 'article_id': $('#article_id').val()})
+                    .done(function() {
+                        location.reload();
+                    })
+                    .fail(function() {
+                        alert('An error occured when trying to like.')
+                    });
+                return false;
+            });
+
+            $('#save').bind('click', function() {
+                $.post('{{ route('save-article') }}', { _token: '{{ csrf_token() }}',
+                                                        article_id: $('#article_id').val(),
+                                                        title: $('#title').val(),
+                                                        body: $('#body').val(),
+                                                        is_draft: $('#is_draft').prop('checked') ? 1 : 0 })
+                    .done(function(data) {
+                        window.location = JSON.parse(data).redirect;
+                    })
+                    .fail(function(jqXHR, textStatus, errorThrown ) {
+                        alert(textStatus);
+                    });
+                return false;
+            });
+
+            $('#delete').bind('click', function() {
+                $.post('{{ route('delete-article') }}', { _token: '{{ csrf_token() }}',
+                                                          article_id: $('#article_id').val() })
+                    .done(function(data) {
+                        window.location = '{{ route('published') }}';
+                    })
+                    .fail(function(jqXHR, textStatus, errorThrown ) {
+                        alert(textStatus);
+                    });
+                return false;
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

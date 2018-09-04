@@ -1,24 +1,17 @@
-@extends('layouts.container')
+@extends('layouts.left-sided-page')
 
-@section('sidebar')
-    @include('layouts.sidebar', ["active" => "published"])
+@section('navigation')
+    @include('layouts.navbar')
 @endsection
 
-@section('mainbar')
-    <div class="panel panel-default">
-        <div class="panel-heading">Your Posts</div>
+@section('sidebar')
+    @include('layouts.author-dashboard-sidebar')
+@endsection
 
-        <div class="panel-body">
-            <ul class="nav nav-tabs nav-justified">
-                <li class="{{ $type == 'published' ? 'active' : '' }}"><a href="{{route('published')}}">Published</a></li>
-                <li class="{{ $type == 'drafts' ? 'active' : '' }}"><a href="{{route('drafts')}}">Drafts</a></li>
-            </ul>
-
-            <ul class="list-group">
-                @foreach($articles as $article)
-                    @include("articles.item", ["article" => $article])
-                @endforeach
-            </ul>
-        </div>
+@section('main-content')    
+    <div class="row">
+        @foreach ($articles as $article)
+            @include("articles.item", ["article" => $article])
+        @endforeach
     </div>
 @endsection
