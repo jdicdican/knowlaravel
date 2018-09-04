@@ -22,7 +22,7 @@
 
             <h1 class="mt-1">{{ $article->title }}</h1>
             
-            <h6>By {{ $article->author->userDetail->firstname }} {{ $article->author->userDetail->lastname }} / {{ $article->author->username }}</h6>
+            <h6>By {{ $article->author->email }}</h6>
             <p class="text-justify">{{ $article->body }}</p>
         </div>
     </div>
@@ -46,7 +46,7 @@
             <ul class="list-group">
                 @foreach($article->comments()->orderBy('id', 'desc')->get() as $comment)
                     <li class="list-group-item disabled">
-                        <span><span class="text-primary font-weight-bold">{{ $comment->writer->username }}</span> {{ $comment->body }}</span>
+                        <span><span class="text-primary font-weight-bold">{{ $comment->writer->email }}</span> {{ $comment->body }}</span>
                     </li>
                 @endforeach
             </ul>
