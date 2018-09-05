@@ -1,8 +1,4 @@
-@extends('layouts.left-sided-page')
-
-@section('navigation')
-    @include('layouts.navbar')
-@endsection
+@extends('layouts.templates.left-sided-page')
 
 @section('sidebar')
     @include('layouts.author-dashboard-sidebar')

@@ -48,7 +48,7 @@ class ArticlesController extends Controller
 
         header('Content-type: application/json');
         return json_encode(['status'=>'success',
-                            'redirect'=>route('view-article-thru-dashboard', ['id'=>$article->id])]);
+                            'redirect'=>route('view-article', ['id'=>$article->id])]);
     }
 
     /**

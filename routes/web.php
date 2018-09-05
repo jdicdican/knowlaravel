@@ -41,16 +41,19 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('dashboard', 'DashboardController@redirectToAppropriateRoute')->name('dashboard');
 
-Route::get('home', 'ArticlesNavigationController@index')->name('articles');
+// Route::get('home', 'ArticlesNavigationController@everyone')->name('articles');
 Route::get('home/articles/{id}', 'ArticlesController@view')->name('view-article');
+Route::get('home/{type}', 'ArticlesNavigationController@everyone')->name('home');
+Route::get('home/{type}/{article_id}', 'ArticlesNavigationController@everyone')->name('home2');
 
 Route::post('like', 'ArticlesController@like')->name('like-article');
 Route::post('comment', 'ArticlesController@comment')->name('comment-article');
 
 Route::group( [ 'middleware' => 'author' ], function () {
-    Route::get('dashboard/published', 'ArticlesNavigationController@published')->name('published');
-    Route::get('dashboard/drafts', 'ArticlesNavigationController@drafts')->name('drafts');
-    Route::get('dashboard/articles/{id}', 'ArticlesController@view')->name('view-article-thru-dashboard');
+    Route::get('dashboard/author/{type}', 'ArticlesNavigationController@author')->name('author-dashboard');
+    // Route::get('dashboard/published', 'ArticlesNavigationController@published')->name('published');
+    // Route::get('dashboard/drafts', 'ArticlesNavigationController@drafts')->name('drafts');
+    // Route::get('dashboard/articles/{id}', 'ArticlesController@view')->name('view-article-thru-dashboard');
     Route::get('dashboard/create', 'ArticlesController@create')->name('create-article');
     Route::post('save', 'ArticlesController@save')->name('save-article');
     Route::post('delete', 'ArticlesController@delete')->name('delete-article');

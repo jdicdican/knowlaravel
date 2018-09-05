@@ -6,12 +6,12 @@
     </button>
     <div class="collapse navbar-collapse" id="app-navbar-collapse">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item {{ strpos( url()->current(), route('articles') ) !== false ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('articles') }}">Home</a>
+            <li class="nav-item {{ strpos( url()->current(), route('home', ['type' => 'all']) ) !== false ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('home', ['type' => 'all']) }}">Home</a>
             </li>
-            @if(Auth::user() != null)
+            @if(!Auth::guest())
                 <li class="nav-item {{ strpos( url()->current(), route('dashboard') ) !== false ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('published') }}">Dashboard</a>
+                    <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                 </li>
             @endif
         </ul>

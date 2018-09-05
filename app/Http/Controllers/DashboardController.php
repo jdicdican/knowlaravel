@@ -15,7 +15,7 @@ class DashboardController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -26,18 +26,21 @@ class DashboardController extends Controller
      */
     public function redirectToAppropriateRoute()
     {
-        session(['user' => \Auth::user()]);
-
-        switch (\Auth::user()->user_type) {
-            case User::ADMIN:
-                return redirect()->route('admin');
-                break;
-            case User::AUTHOR:
-                return redirect()->route('published');
-                break;
-            case User::REGULAR:
-                return redirect()->route('articles');
-                break;
+        if(\Auth::guest()) {
+            return redirect()->route('home', ['type' => 'all']);
+        } else {
+            switch (\Auth::user()->user_type) {
+                case User::ADMIN:
+                    return redirect()->route('admin');
+                    break;
+                case User::AUTHOR:
+                    return redirect()->route('author-dashboard', ['type' => 'my']);
+                    break;
+                case User::REGULAR:
+                    return redirect()->route('home', ['type' => 'all']);
+                    break;
+            }
         }
+        session(['user' => \Auth::user()]);
     }
 }
