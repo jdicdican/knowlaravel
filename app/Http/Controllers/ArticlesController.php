@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\User;
+use App\Models\Comment;
 use App\Http\Requests\ArticleSave;
 
 class ArticlesController extends Controller
@@ -22,50 +23,55 @@ class ArticlesController extends Controller
     }
 
     /**
-     * Creates a new article if $articleID is NULL; updates the existing
-     * article if otherwise
+     * Lets user create a new article or update an existing article
      *
      * @param App\Http\Requests\ArticleSave $request
      * @param integer $articleID
      * @return Illuminate\Http\RedirectResponse
      */
-    public function save(ArticleSave $request, $articleID = NULL)
+    public function save(ArticleSave $request)
     {
-
-        $article = \Auth::user()->articles()->where('id', $articleID);
-        $date = $request['is_draft'][0] == 1 ? NULL : date('Y-m-d H:i:s');
+        $articleID = $request->input('article_id');
+        $date = $request->input('is_draft') ? NULL : date('Y-m-d H:i:s');
         $data = [
-            'title' => $request['title'],
-            'body' => $request['body'],
+            'title' => $request->input('title'),
+            'body' => $request->input('body'),
             'published_at' => $date
         ];
 
         if ($articleID == NULL) { // create new article
-            \Auth::user()->articles()->create($data);
-        } else if ($article) { // if user owns the article... update the article
+            $article = \Auth::user()->articles()->create($data);
+        } else { // update existing article
+            $article = Article::find($articleID);
             $article->update($data);
         }
 
-        return redirect()->route('published');
+        return response()->json([
+            'status'=>'success',
+            'redirect'=>route('view-article', ['id'=>$article->id])
+        ]);
     }
 
     /**
-     * Deletes the article with the id $articleID
+     * Lets user perform a delete action on an article
      *
-     * @param integer $articleID
-     * @return Illuminate\Http\RedirectResponse
+     * @param Illuminate\Http\Request $request
+     * @return array
      */
-    public function delete($articleID)
+    public function delete(Request $request)
     {
-        $article = Article::find($articleID);
+        $articleID = $request->input('article_id');
 
-        if(\Auth::user()->articles->contains($articleID)) {
-            $article->delete();
-
-            return redirect()->back();
-        } else {
-            abort(403);
+        if(!\Auth::user()->articles->contains($articleID)) {   
+            die('User is not the author of the article to be deleted.');
         }
+
+        $article = Article::find($articleID);
+        $article->delete();
+        
+        return response()->json([
+            'status'=>'success',
+        ]);
     }
 
     /**
@@ -77,34 +83,71 @@ class ArticlesController extends Controller
      */
     public function update($articleID)
     {
-        $article = Article::find($articleID);
-
-        if(\Auth::user()->articles->contains($articleID)) {
+        if(\Auth::user()->articles->contains($articleID)) {   
+            $article = Article::find($articleID);
             return view('articles.edit')->with([
                 'method' => 'update',
-                'id' => $article->id,
-                'title' => $article->title,
-                'body' => $article->body
+                'article' => $article
             ]);
-        } else {
-            abort(403);
         }
+
+        return view('errors.403');
     }
 
     /**
-     * Likes the article with $articleID; unlikes if the user already
-     * liked it
+     * Lets user perform a like action on an article
      *
-     * @param integer $articleID
-     * @return Illuminate\Http\RedirectResponse
+     * @param Illuminate\Http\Request $request
+     * @return array
      */
-    public function like($articleID)
+    public function like(Request $request)
     {
+        $articleID = $request->input('article_id');
         if (\Auth::user()->articlesLiked->contains($articleID)) {
             \Auth::user()->articlesLiked()->detach($articleID);
         } else {
             \Auth::user()->articlesLiked()->attach($articleID);
         }
-        return redirect()->back();
+        
+        return response()->json([
+            'status'=>'success',
+        ]);
+    }
+
+    /**
+     * Shows the article / post with the specified $articleID
+     * 
+     * @param integer $articleID
+     * @return Illuminate\Http\RedirectResponse
+     */
+    public function view($articleID)
+    {
+        $article = Article::find($articleID);
+
+        return view('articles.article')->with([
+            "article" => $article
+        ]);
+    }
+
+    /**
+     * Lets user comment on an article
+     * 
+     * @param Illuminate\Http\Request $request
+     * @return array
+     */
+    public function comment(Request $request)
+    {
+        $user = \Auth::user();
+        $article = Article::find($request->input('article_id'));
+
+        $comment = new Comment;
+        $comment->writer()->associate($user);
+        $comment->article()->associate($article);
+        $comment->body = $request->input('comment');
+        $comment->save();
+
+        return response()->json([
+            'status'=>'success',
+        ]);
     }
 }
