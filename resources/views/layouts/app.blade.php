@@ -76,7 +76,7 @@
                                                         body: $('#body').val(),
                                                         is_draft: $('#is_draft').prop('checked') ? 1 : 0 })
                     .done(function(data) {
-                        window.location = JSON.parse(data).redirect;
+                        window.location = data.redirect;
                     })
                     .fail(function(jqXHR, textStatus, errorThrown ) {
                         alert(textStatus);

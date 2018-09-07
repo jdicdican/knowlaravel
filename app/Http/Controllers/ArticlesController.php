@@ -46,9 +46,10 @@ class ArticlesController extends Controller
             $article->update($data);
         }
 
-        header('Content-type: application/json');
-        return json_encode(['status'=>'success',
-                            'redirect'=>route('view-article', ['id'=>$article->id])]);
+        return response()->json([
+            'status'=>'success',
+            'redirect'=>route('view-article', ['id'=>$article->id])
+        ]);
     }
 
     /**
@@ -68,8 +69,9 @@ class ArticlesController extends Controller
         $article = Article::find($articleID);
         $article->delete();
         
-        header('content-type: application/json');
-        return json_encode(['status'=>'success']);
+        return response()->json([
+            'status'=>'success',
+        ]);
     }
 
     /**
@@ -81,15 +83,15 @@ class ArticlesController extends Controller
      */
     public function update($articleID)
     {
-        if(!\Auth::user()->articles->contains($articleID)) {   
-            die('User is not the author of the article to be updated.');
+        if(\Auth::user()->articles->contains($articleID)) {   
+            $article = Article::find($articleID);
+            return view('articles.edit')->with([
+                'method' => 'update',
+                'article' => $article
+            ]);
         }
 
-        $article = Article::find($articleID);
-        return view('articles.edit')->with([
-            'method' => 'update',
-            'article' => $article
-        ]);
+        return view('errors.403');
     }
 
     /**
@@ -101,15 +103,15 @@ class ArticlesController extends Controller
     public function like(Request $request)
     {
         $articleID = $request->input('article_id');
-        echo $request->input('article_id');
         if (\Auth::user()->articlesLiked->contains($articleID)) {
             \Auth::user()->articlesLiked()->detach($articleID);
         } else {
             \Auth::user()->articlesLiked()->attach($articleID);
         }
         
-        header('Content-type: application/json');
-        return json_encode(['status'=>'success']);
+        return response()->json([
+            'status'=>'success',
+        ]);
     }
 
     /**
@@ -144,7 +146,8 @@ class ArticlesController extends Controller
         $comment->body = $request->input('comment');
         $comment->save();
 
-        header('Content-type: application/json');
-        return json_encode(['status'=>'success']);
+        return response()->json([
+            'status'=>'success',
+        ]);
     }
 }
