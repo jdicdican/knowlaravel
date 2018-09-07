@@ -10,7 +10,7 @@ class ArticlesNavigationController extends Controller
 {
     /**
      * Show all of the published articles
-     * 
+     *
      * @param Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -21,7 +21,7 @@ class ArticlesNavigationController extends Controller
 
     /**
      * Show all of the most liked, published articles
-     *  
+     *
      * @param Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -73,5 +73,18 @@ class ArticlesNavigationController extends Controller
         return view('articles.authored', [
             'type' => 'drafts',
             'articles' => \Auth::user()->articles()->drafts()->get()->sortByDesc('id')]);
+    }
+
+    /**
+    *Show list of Bookmarked Articles
+    */
+    public function getBookmark()
+    {
+        $bookmarks = \Auth::user()->bookmark()->orderBy('id', 'desc')->paginate(5);
+
+        return view('articles.bookmarks', [
+            'type' => 'bookmarks',
+            'bookmarks' =>  $bookmarks
+        ]);
     }
 }

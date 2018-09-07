@@ -56,4 +56,13 @@ class Article extends Model
     {
         return $query->whereNull('published_at');
     }
+    /**
+     * A User can have many Articles
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function bookmark()
+    {
+        return $this->belongsToMany('App\Models\User', 'users_bookmarks_article', 'author_id', 'id');
+    }
 }

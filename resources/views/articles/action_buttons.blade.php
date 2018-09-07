@@ -3,7 +3,7 @@
         <a href="{{route('like-article', $article->id)}}" class="btn {{ ((Auth::user()->articlesLiked->contains($article->id)) ? 'btn-danger' : 'btn-default') }}">
             {{ $article->likers_count }} LIKE
         </a>
-        <a href="#" class="btn btn-default">BOOKMARK</a>
+        <a href="{{route('bookmark', $article->id)}}" class="btn {{ ((Auth::user()->bookmark->contains($article->id)) ? 'btn-danger' : 'btn-default') }}">BOOKMARK</a>
     @endif
 
     @if(Auth::user()->articles->contains($article->id))

@@ -20,6 +20,7 @@ Route::group ( [ 'middleware' => 'auth.admin' ], function () {
     Route::get('authors/confirm_delete/{id}', 'AdminController@deletePopup')->name('authors.confirm_delete');
     Route::get('authors/delete/{id}', 'AdminController@deleteAuthor')->name('authors.delete');
     Route::put('authors/update/{id}', 'AdminController@updateAuthor')->name('authors.update');
+    Route::get('authors/view/{id}', 'AdminController@showAllAuthorArticles')->name('author.articles');
 });
 
 Route::get('/', 'DashboardController@redirectToAppropriateRoute')->name('index');
@@ -42,6 +43,11 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::get('articles', 'ArticlesNavigationController@index')->name('articles');
 Route::get('articles/most_liked', 'ArticlesNavigationController@mostLiked')->name('most_liked');
 Route::get('articles/like/{id}', 'ArticlesController@like')->name('like-article');
+
+//Bookmarks Routes
+Route::get('articles/bookmarks/{id}', 'ArticlesController@bookmarkArticle')->name('bookmark');
+Route::get('articles/bookmarks', 'ArticlesNavigationController@getBookmark')->name('bookmarks.list');
+Route::get('articles/view/{id}', 'ArticlesController@showArticle')->name('article.view');
 
 Route::group( [ 'middleware' => 'author' ], function () {
     Route::get('articles/published', 'ArticlesNavigationController@published')->name('published');

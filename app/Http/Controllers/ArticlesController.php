@@ -107,4 +107,40 @@ class ArticlesController extends Controller
         }
         return redirect()->back();
     }
+
+    /**
+     * Bookmarks the article with $articleID; removes bookmark if the user already
+     * bookmarked it
+     *
+     * @param integer $articleID
+     * @return Illuminate\Http\RedirectResponse
+     */
+    public function bookmarkArticle($articleID)
+    {
+        if (\Auth::user()->bookmark->contains($articleID)) {
+            \Auth::user()->bookmark()->detach($articleID);
+        } else {
+            \Auth::user()->bookmark()->attach($articleID);
+        }
+        return redirect()->back();
+    }
+
+
+    /**
+     * Gets the article with $articleID;
+     * View Displays only the specified post
+     *
+     * @param integer $articleID
+     * @return Illuminate\Http\RedirectResponse
+     */
+    public function showArticle($articleID)
+    {
+        $article = Article::find($articleID);
+        $article->likers()->count();
+
+        return view('articles.view_article', [
+            'type' => 'bookmarks',
+            'article' => $article
+        ]);
+    }
 }
