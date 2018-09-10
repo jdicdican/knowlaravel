@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-6 col-md">
             @if(!Auth::guest())
-                <!-- @if(Auth::user()->articles->contains($article->id)) -->
+                @if(Auth::user()->articles->contains($article->id))
                     <div class="btn-group btn-group-sm float-right mt-3" role="group">
                         <a href="{{route('update-article', $article->id)}}" class="btn btn-outline-success">
                             <span class="oi oi-pencil" title="Edit" aria-hidden="true"></span>
@@ -19,7 +19,7 @@
             @endif
 
             <h1 class="mt-1">{{ $article->title }}</h1>
-            
+
             <h6>By {{ $article->author->email }}</h6>
             <p class="text-justify">{{ $article->body }}</p>
         </div>

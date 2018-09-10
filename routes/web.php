@@ -45,14 +45,12 @@ Route::get('dashboard', 'DashboardController@redirectToAppropriateRoute')->name(
 // Route::get('home', 'ArticlesNavigationController@everyone')->name('articles');
 Route::get('home/articles/{id}', 'ArticlesController@view')->name('view-article');
 Route::get('home/{type}', 'ArticlesNavigationController@everyone')->name('home');
-Route::get('home/{type}/{article_id}', 'ArticlesNavigationController@everyone')->name('home2');
 
 Route::post('like', 'ArticlesController@like')->name('like-article');
 Route::post('comment', 'ArticlesController@comment')->name('comment-article');
 
 //Bookmarks Routes
 Route::get('bookmarks/{id}', 'ArticlesController@bookmarkArticle')->name('bookmark');
-Route::get('home/{type}/all', 'ArticlesNavigationController@everyone')->name('bookmarks.list');
 
 Route::group( [ 'middleware' => 'author' ], function () {
     Route::get('dashboard/author/{type}', 'ArticlesNavigationController@author')->name('author-dashboard');

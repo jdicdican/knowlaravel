@@ -57,7 +57,7 @@ class ArticlesNavigationController extends Controller
                 $articles = $articles->orderBy('likers_count', 'desc')->published();
                 break;
             case 'bookmarks':
-                $articles = \Auth::user()->bookmarks()->orderBy('id', 'desc');
+                $articles = \Auth::user()->bookmarks()->withCount('likers')->orderBy('id', 'desc');
                 break;
 
             default:
