@@ -66,15 +66,24 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Article', 'user_likes_article');
     }
 
+    /**
+     * Returns true if user is admin
+     *
+     * @return boolean
+     */
     public function isAdmin()
     {
         return $this->user_type==1;
     }
-    
+
+    public function bookmarks()
+    {
+        return $this->belongsToMany('App\Models\Article', 'users_bookmarks_article');
+    }
     /**
      * Gets the comments made by the user
      *
-     * @return Illuminate\Database\Eloquent\Relations\HasMany 
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments()
     {

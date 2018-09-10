@@ -5,6 +5,9 @@
             <h6 class="card-subtitle mb-2 text-muted">By {{ $article->author->email }}</h6>
             <p class="card-text">{{ substr($article->body, 0, 100) }}...</p>
             <a class="btn btn-outline-primary btn-sm" href="{{ route('view-article', ['id' => $article->id]) }}" target="_blank">View</a>
+            @if(!Auth::guest())
+                <a class="btn btn-outline-primary btn-sm {{ (Auth::user()->bookmarks->contains($article->id) ? 'active' : '' )}}" href="{{ route('bookmark', ['id' => $article->id]) }}">Bookmark</a>
+            @endif
         </div>
         <div class="card-footer">
             <small class="muted">{{ $article->likers_count }} likes</small>

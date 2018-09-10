@@ -28,7 +28,7 @@ class Article extends Model
     /**
      * Gets the comments under the article
      *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo 
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function comments()
     {
@@ -65,5 +65,14 @@ class Article extends Model
     public function scopeDrafts($query)
     {
         return $query->whereNull('published_at');
+    }
+    /**
+     * A User can have many Articles
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function bookmarks()
+    {
+        return $this->belongsToMany('App\Models\User', 'users_bookmarks_article', 'author_id', 'id');
     }
 }

@@ -62,13 +62,13 @@ class ArticlesController extends Controller
     {
         $articleID = $request->input('article_id');
 
-        if(!\Auth::user()->articles->contains($articleID)) {   
+        if(!\Auth::user()->articles->contains($articleID)) {
             die('User is not the author of the article to be deleted.');
         }
 
         $article = Article::find($articleID);
         $article->delete();
-        
+
         return response()->json([
             'status'=>'success',
         ]);
@@ -83,7 +83,7 @@ class ArticlesController extends Controller
      */
     public function update($articleID)
     {
-        if(\Auth::user()->articles->contains($articleID)) {   
+        if(\Auth::user()->articles->contains($articleID)) {
             $article = Article::find($articleID);
             return view('articles.edit')->with([
                 'method' => 'update',
@@ -108,7 +108,7 @@ class ArticlesController extends Controller
         } else {
             \Auth::user()->articlesLiked()->attach($articleID);
         }
-        
+
         return response()->json([
             'status'=>'success',
         ]);
@@ -116,7 +116,7 @@ class ArticlesController extends Controller
 
     /**
      * Shows the article / post with the specified $articleID
-     * 
+     *
      * @param integer $articleID
      * @return Illuminate\Http\RedirectResponse
      */
@@ -131,7 +131,7 @@ class ArticlesController extends Controller
 
     /**
      * Lets user comment on an article
-     * 
+     *
      * @param Illuminate\Http\Request $request
      * @return array
      */
@@ -149,5 +149,22 @@ class ArticlesController extends Controller
         return response()->json([
             'status'=>'success',
         ]);
+    }
+
+    /**
+     * Bookmarks the article with $articleID; removes bookmark if the user already
+     * bookmarked it
+     *
+     * @param integer $articleID
+     * @return Illuminate\Http\RedirectResponse
+     */
+    public function bookmarkArticle($articleID)
+    {
+        if (\Auth::user()->bookmarks->contains($articleID)) {
+            \Auth::user()->bookmarks()->detach($articleID);
+        } else {
+            \Auth::user()->bookmarks()->attach($articleID);
+        }
+        return redirect()->back();
     }
 }
