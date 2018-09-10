@@ -26,6 +26,16 @@ class Article extends Model
     }
 
     /**
+     * Gets the comments under the article
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    /**
      * Gets the users who likes the article
      *
      * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -61,7 +71,7 @@ class Article extends Model
      *
      * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function bookmark()
+    public function bookmarks()
     {
         return $this->belongsToMany('App\Models\User', 'users_bookmarks_article', 'author_id', 'id');
     }

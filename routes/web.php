@@ -40,20 +40,24 @@ $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
-Route::get('articles', 'ArticlesNavigationController@index')->name('articles');
-Route::get('articles/most_liked', 'ArticlesNavigationController@mostLiked')->name('most_liked');
-Route::get('articles/like/{id}', 'ArticlesController@like')->name('like-article');
+Route::get('dashboard', 'DashboardController@redirectToAppropriateRoute')->name('dashboard');
+
+// Route::get('home', 'ArticlesNavigationController@everyone')->name('articles');
+Route::get('home/articles/{id}', 'ArticlesController@view')->name('view-article');
+Route::get('home/{type}', 'ArticlesNavigationController@everyone')->name('home');
+Route::get('home/{type}/{article_id}', 'ArticlesNavigationController@everyone')->name('home2');
+
+Route::post('like', 'ArticlesController@like')->name('like-article');
+Route::post('comment', 'ArticlesController@comment')->name('comment-article');
 
 //Bookmarks Routes
-Route::get('articles/bookmarks/{id}', 'ArticlesController@bookmarkArticle')->name('bookmark');
-Route::get('articles/bookmarks', 'ArticlesNavigationController@getBookmark')->name('bookmarks.list');
-Route::get('articles/view/{id}', 'ArticlesController@showArticle')->name('article.view');
+Route::get('bookmarks/{id}', 'ArticlesController@bookmarkArticle')->name('bookmark');
+Route::get('home/{type}/all', 'ArticlesNavigationController@everyone')->name('bookmarks.list');
 
 Route::group( [ 'middleware' => 'author' ], function () {
-    Route::get('articles/published', 'ArticlesNavigationController@published')->name('published');
-    Route::get('articles/drafts', 'ArticlesNavigationController@drafts')->name('drafts');
-    Route::get('articles/create', 'ArticlesController@create')->name('create-article');
-    Route::post('articles/save/{id?}', 'ArticlesController@save')->name('save-article');
-    Route::get('articles/delete/{id}', 'ArticlesController@delete')->name('delete-article');
-    Route::get('articles/update/{id}', 'ArticlesController@update')->name('update-article');
+    Route::get('dashboard/author/{type}', 'ArticlesNavigationController@author')->name('author-dashboard');
+    Route::get('dashboard/create', 'ArticlesController@create')->name('create-article');
+    Route::post('save', 'ArticlesController@save')->name('save-article');
+    Route::post('delete', 'ArticlesController@delete')->name('delete-article');
+    Route::get('dashboard/update/{id}', 'ArticlesController@update')->name('update-article');
 });
