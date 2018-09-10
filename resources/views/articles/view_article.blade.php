@@ -1,4 +1,4 @@
-@extends('layouts.container')
+@extends('layouts.navbar')
 <?php
     $user_type = session('user')['user_type'];
     $user_mode = ($user_type == 1 ? 'Admin' : ($user_type == 2 ? 'Author' : 'Regular'));
@@ -24,8 +24,8 @@
                 </ul>
 
                 <a href="{{route('like-article', $article->id)}}" class="btn {{ ((Auth::user()->articlesLiked->contains($article->id)) ? 'btn-danger' : 'btn-default') }}">{{ $article->likers->count() }} LIKE </a>
-                <a href="{{route('bookmark', $article->id)}}" class="btn {{ ((Auth::user()->bookmark->contains($article->id)) ? 'btn-danger' : 'btn-default') }}">BOOKMARK</a>
-                <a href="{{route('bookmarks.list')}}" class="btn {{ ((Auth::user()->bookmark->contains($article->id)) ? 'btn-primary' : 'btn-default') }}">BACK</a>
+                <a href="{{route('bookmark', $article->id)}}" class="btn {{ ((Auth::user()->bookmarks->contains($article->id)) ? 'btn-danger' : 'btn-default') }}">BOOKMARK</a>
+                <a href="{{route('bookmarks.list')}}" class="btn {{ ((Auth::user()->bookmarks->contains($article->id)) ? 'btn-primary' : 'btn-default') }}">BACK</a>
 
         </div>
     </div>

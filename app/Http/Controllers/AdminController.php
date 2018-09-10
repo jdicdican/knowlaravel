@@ -26,14 +26,30 @@ class AdminController extends Controller
             'authors' => $authors->toArray()
         ]);
     }
-    public function showAuthor($id)
+     public function showAuthor($id)
     {
-        $author = User::with('userDetail')->find($id);
+        $author = User::find($id);
 
 
         return view('admin.view_author', [
-            'author' => $author->toArray()
+            'articles' => $author->articles()->orderBy('id', 'desc')->take(10)->get(),
+            'author' => $author
         ]);
+    }
+
+    public function showAllAuthorArticles(Request $request, $id)
+    {
+        $author = User::find($id);
+        $items_per_page = $request->get('items_per_page', 5);
+
+
+        return view('admin.author_articles', [
+            'articles' => $author->articles()->paginate($items_per_page)
+                            ->withPath(route('author.articles', ['id'=>$author->id])."?items_per_page=".strval($items_per_page)),
+            'author' => $author
+        ]);
+
+
     }
 
     public function showEditAuthor($id)
