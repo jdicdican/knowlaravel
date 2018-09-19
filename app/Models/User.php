@@ -90,9 +90,16 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Comment');
     }
 
-    public function fullName()
+    public function getDisplayName()
     {
-        return $this->userDetail->firstname.' '.$this->userDetail->lastname;
+        if ($this->userDetail->firstname.' '.$this->userDetail->lastname == ' ' ) {
+            if(empty($this->username)) {
+                return $this->email;
+            }
+            return $this->username;
+        } else {
+            return $this->userDetail->firstname.' '.$this->userDetail->lastname;
+        }
     }
 
 }
