@@ -9,20 +9,20 @@
             <li class="nav-item {{ strpos( url()->current(), route('home', ['type' => 'all']) ) !== false ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('home', ['type' => 'all']) }}">Home</a>
             </li>
-            @if(!Auth::guest() && !(Auth::user()->user_type == 3))
+            @if(!auth()->guest() && !(auth()->user()->user_type == 3))
                 <li class="nav-item {{ strpos( url()->current(), route('dashboard') ) !== false ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                 </li>
             @endif
         </ul>
         <ul class="navbar-nav">
-            @if (Auth::guest())
+            @if (auth()->guest())
                 <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
             @else
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ Auth::user()->name }} <span class="caret"></span>
+                        {{ auth()->user()->name }} <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('logout') }}"
