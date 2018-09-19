@@ -89,4 +89,19 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Comment');
     }
+
+    public function getDisplayName()
+    {
+        $fullname = trim($this->userDetail->firstname.' '.$this->userDetail->lastname);
+        $display_name = $this->email;
+
+        if($fullname) {
+            $display_name = $fullname;
+        } else if($this->username) {
+            $display_name = $this->username;
+        }
+
+        return $display_name;
+    }
+
 }
