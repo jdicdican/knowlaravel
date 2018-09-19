@@ -92,14 +92,16 @@ class User extends Authenticatable
 
     public function getDisplayName()
     {
-        if ($this->userDetail->firstname.' '.$this->userDetail->lastname == ' ' ) {
-            if(empty($this->username)) {
-                return $this->email;
-            }
-            return $this->username;
-        } else {
-            return $this->userDetail->firstname.' '.$this->userDetail->lastname;
+        $fullname = trim($this->userDetail->firstname.' '.$this->userDetail->lastname);
+        $display_name = $this->email;
+
+        if($fullname) {
+            $display_name = $fullname;
+        } else if($this->username) {
+            $display_name = $this->username;
         }
+
+        return $display_name;
     }
 
 }
