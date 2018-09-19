@@ -5,18 +5,16 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="app-navbar-collapse">
-        @if (!Auth::user())
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item {{ strpos( url()->current(), route('home', ['type' => 'all']) ) !== false ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('home', ['type' => 'all']) }}">Home</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {{ strpos( url()->current(), route('home', ['type' => 'all']) ) !== false ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('home', ['type' => 'all']) }}">Home</a>
+            </li>
+            @if(!Auth::guest() && !(Auth::user()->user_type == 3))
+                <li class="nav-item {{ strpos( url()->current(), route('dashboard') ) !== false ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                 </li>
-                @if(!Auth::guest())
-                    <li class="nav-item {{ strpos( url()->current(), route('dashboard') ) !== false ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
-                    </li>
-                @endif
-            </ul>
-        @endif
+            @endif
+        </ul>
         <ul class="navbar-nav">
             @if (Auth::guest())
                 <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
