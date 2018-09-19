@@ -20,6 +20,9 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
             @else
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('profile') }}"><span class="oi oi-person" title="Profile" aria-hidden="true"></span></a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ auth()->user()->name }} <span class="caret"></span>
@@ -34,11 +37,6 @@
                             {{ csrf_field() }}
                         </form>
                     </div>
-                </li>
-            @endif
-            @if (!auth()->guest())
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('profile') }}"><span class="oi oi-person" title="Profile" aria-hidden="true"></span></a>
                 </li>
             @endif
         </ul>
