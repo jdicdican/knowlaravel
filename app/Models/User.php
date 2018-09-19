@@ -89,4 +89,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Comment');
     }
+
+    public function fullName()
+    {
+        return $this->userDetail->firstname.' '.$this->userDetail->lastname;
+    }
+
 }
