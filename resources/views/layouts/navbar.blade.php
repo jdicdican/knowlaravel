@@ -36,6 +36,11 @@
                     </div>
                 </li>
             @endif
+            @if (!auth()->guest())
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('profile') }}"><span class="oi oi-person" title="Profile" aria-hidden="true"></span></a>
+                </li>
+            @endif
         </ul>
     </div>
 </nav>

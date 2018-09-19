@@ -52,6 +52,7 @@ Route::post('comment', 'ArticlesController@comment')->name('comment-article');
 //Bookmarks Routes
 Route::get('bookmarks/{id}', 'ArticlesController@bookmarkArticle')->name('bookmark');
 
+// Author specific routes and actions
 Route::group( [ 'middleware' => 'author' ], function () {
     Route::get('dashboard/author/{type}', 'ArticlesNavigationController@author')->name('author-dashboard');
     Route::get('dashboard/create', 'ArticlesController@create')->name('create-article');
@@ -59,3 +60,8 @@ Route::group( [ 'middleware' => 'author' ], function () {
     Route::post('delete', 'ArticlesController@delete')->name('delete-article');
     Route::get('dashboard/update/{id}', 'ArticlesController@update')->name('update-article');
 });
+
+Route::group( [ 'middleware' => 'auth' ], function () {
+    Route::get('profile', 'ProfileController@show')->name('profile');
+});
+
