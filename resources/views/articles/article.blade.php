@@ -46,7 +46,7 @@
             <ul class="list-group">
                 @foreach($article->comments()->orderBy('id', 'desc')->get() as $comment)
                     <li class="list-group-item disabled">
-                        <span><span class="text-primary font-weight-bold">{{ $comment->writer->email }}</span> {{ $comment->body }} <i>{{ $comment->time_elapse() }}</i></span>
+                        <span><span class="text-primary font-weight-bold">{{ $comment->writer->email }}</span> {{ $comment->body }} <i>{{ $comment->timeElapse() }}</i></span>
                     </li>
                 @endforeach
             </ul>

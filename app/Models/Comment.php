@@ -45,7 +45,7 @@ class Comment extends Model
      * 
      * @return mixed
      */
-    public function time_elapse($measurement = '', $preformatted = true)
+    public function timeElapse($measurement = '', $preformatted = true)
     {
         $now = Carbon::now();
         $diff = [
