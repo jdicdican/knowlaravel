@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.templates.full-page')
 <style type="text/css">
     .author {
         display: block;
@@ -13,13 +13,13 @@
         padding-right: 10px;
     }
 </style>
-@section('content')
+@section('main-content')
     <div class="container">
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">Author's List</div>
                 <div class="panel-body">
-                    <table>
+                    <table class="table">
                         <tr>
                             <td>User ID</td>
                             <td>First Name</td>

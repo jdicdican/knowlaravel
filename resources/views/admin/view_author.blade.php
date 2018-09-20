@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.templates.full-page')
+@section('main-content')
 <style type="text/css">
     .author {
         display: block;
@@ -10,14 +11,13 @@
         text-decoration: none;
     }
 </style>
-@section('content')
     <div class="container">
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">Author's Info</div>
                 <div class="panel-body">
                 <div style="display: none;">ID: {{$author['id']}}</div>
-                    <table>
+                    <table class="table">
                         <tr>
                             <td><h4>Name: {{$author->userDetail->firstname}} {{$author->userDetail->lastname}}</h4></td>
                             <td>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.templates.full-page')
 <style type="text/css">
     .author {
         display: block;
@@ -10,7 +10,7 @@
         text-decoration: none;
     }
 </style>
-@section('content')
+@section('main-content')
     <div class="container">
         <div class="col-md-8">
             <div class="panel panel-default">

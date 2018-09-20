@@ -1,5 +1,5 @@
-@extends('layouts.app')
-@section('content')
+@extends('layouts.templates.full-page')
+@section('main-content')
     <div class="container">
         <div class="col-md-8">
             <div class="panel panel-default">

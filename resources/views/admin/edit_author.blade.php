@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.templates.full-page')
 <style type="text/css">
     .author {
         display: block;
@@ -9,8 +9,11 @@
     a:link {
         text-decoration: none;
     }
+    .back {
+        margin-left: -190px;
+    }
 </style>
-@section('content')
+@section('main-content')
     <div class="container">
         <div class="col-md-8">
             <div class="panel panel-default">
@@ -22,8 +25,8 @@
                         First name: <input type="text" name="firstname" value="{{$author['user_detail']['firstname']}}"><br>
                         Last name: <input type="text" name="lastname" value="{{$author['user_detail']['lastname']}}"><br><br>
                     <input class="btn btn-success btn-sm" type="submit" name="edit" value="Update">
-                    <a href="{{ route('authors.index') }}"><button class="btn btn-primary btn-sm">Cancel</button></a>
                 </form>
+                <a href="{{ route('authors.index') }}"><button class="btn btn-primary btn-sm back">Cancel</button></a>
                 </div>
                 </div>
             </div>
