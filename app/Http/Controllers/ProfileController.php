@@ -9,7 +9,7 @@ class ProfileController extends Controller
     public function show($id) //get user's info using user id
     {
        $user = User::find($id);
-       return view('layouts.profile', [
+       return view('users.profile', [
             'user' => $user
         ]);
     }
@@ -17,7 +17,7 @@ class ProfileController extends Controller
     public function showEditProfile($id)//show edit_profile page
     {
         $user = User::find($id);
-       return view('layouts.edit_profile', [
+       return view('users.edit_profile', [
             'user' => $user
         ]);
     }
