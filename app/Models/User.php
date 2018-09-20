@@ -105,4 +105,18 @@ class User extends Authenticatable
         return $display_name;
     }
 
+    public function printUserType()
+    {
+        $user_type = $this->user_type;
+
+        if ($user_type == 1) {
+            echo "Admin";
+        }else if ($user_type == 2) {
+            echo "Author";
+        }else{
+            echo "Regular User";
+        }
+
+    }
+
 }
