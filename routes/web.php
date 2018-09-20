@@ -63,5 +63,7 @@ Route::group( [ 'middleware' => 'author' ], function () {
 
 Route::group( [ 'middleware' => 'auth' ], function () {
     Route::get('profile/{id}', 'ProfileController@show')->name('profile');
+    Route::get('profile/edit/{id}', 'ProfileController@showEditProfile')->name('edit-profile');
+    Route::put('profile/update/{id}', 'ProfileController@updateProfile')->name('update-profile');
 });
 

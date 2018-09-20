@@ -104,8 +104,8 @@ class User extends Authenticatable
 
         return $display_name;
     }
-
-    public function printUserType()
+    //get User Types of User and print them as Text
+    public function getUserType()
     {
         $user_type = $this->user_type;
 
