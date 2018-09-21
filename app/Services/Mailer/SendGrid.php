@@ -16,36 +16,77 @@ class SendGrid extends Mailer
         $this->response = null;
     }
 
+    /**
+     * Set the sender email address of the email object
+     *
+     * @param string $email
+     * @param string|null $name
+     * @return App\Services\Mailer\SendGrid
+     */ 
     public function from($email, $name = null)
     {
         $this->email->setFrom($email, $name);
         return $this;
     }
 
+    /**
+     * Add the recipient's email address to the email object
+     *
+     * @param string $email
+     * @param string|null $name
+     * @return App\Services\Mailer\SendGrid
+     */ 
     public function to($email, $name = null)
     {
         $this->email->addTo($email, $name);
         return $this;
     }
 
+    /**
+     * Set the subject of the email object
+     *
+     * @param string $subject
+     * @return App\Services\Mailer\SendGrid
+     */ 
     public function subject($subject)
     {
         $this->email->setSubject($subject);
         return $this;
     }
 
+    /**
+     * Set the content the email object.
+     * The content must be an html parseable string.
+     * 
+     * @param string $content
+     * @return App\Services\Mailer\SendGrid
+     */
     public function content($content)
     {
         $this->email->addContent("text/html", $content);
         return $this;
     }
 
+    /**
+     * Add a custom member to the object
+     * 
+     * @param string $key
+     * @param string $value
+     * @return App\Services\Mailer\SendGrid
+     */
     public function custom($key, $value)
     {
         $this->email->addCustomArg($key, $value);
         return $this;
     }
 
+    /**
+     * Send the email
+     * 
+     * @param array|null $data
+     * @param bool $log
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function send($data = null, $log = false)
     {
         // If data is passed to send, we will assume that the mail
@@ -73,6 +114,12 @@ class SendGrid extends Mailer
             : "You will receive a reset link if the email address you provided is correct.");
     }
 
+    /**
+     * Set the state of the email object
+     * 
+     * @param array $data
+     * @return void
+     */
     protected function massSetEmailData($data)
     {
         if (isset($data["from"]["email"])) {
