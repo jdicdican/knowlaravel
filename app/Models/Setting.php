@@ -38,7 +38,7 @@ class Setting extends Model
      * @param string $key
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOfKey($query, $key)
+    public function scopeWithKey($query, $key)
     {
         return $query->where('key', $key);
     }

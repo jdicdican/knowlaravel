@@ -58,14 +58,22 @@ class ForgotPasswordController extends Controller
         ]);
 
         $email = new SendGrid;
-        $email->from("noreply@knowlaravel.com", "Know Laravel")
-              ->to($email_address)
-              ->subject("Reset your password")
-              ->content("
-                    <p>You requested to reset your password.</p>
-                    <p>Just click on the link below:</p>
-                    <a href='".route('password.reset', ['token' => $token_alias])."'>Reset Password</a>");
-        $response = $email->send();
+        $data = [
+            "from" => [
+                "email" => "noreply@knowlaravel.com",
+                "name" => "Know Laravel"
+            ],
+            "to" => [
+                "email" => $email_address
+            ],
+            "subject" => "Reset your password",
+            "content" => "<p>You requested to reset your password.</p>
+                          <p>Just click on the link below:</p>
+                          <a href='".route('password.reset', ['token' => $token_alias])."'>Reset Password</a>"
+        ];
+
+        $response = $email->send($data);
+        
         return $response;
     }
 }

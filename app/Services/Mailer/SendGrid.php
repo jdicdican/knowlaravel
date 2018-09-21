@@ -5,6 +5,7 @@ namespace App\Services\Mailer;
 use SendGrid as API;
 use SendGrid\Mail\Mail;
 use App\Services\Security\TokenDependent;
+use App\Models\Setting;
 
 class SendGrid extends Mailer
 {
@@ -14,6 +15,9 @@ class SendGrid extends Mailer
     {
         $this->email = new Mail();
         $this->response = null;
+
+        $this->from(Setting::ofGroup(Setting::GROUP_MAIL)->withKey(Setting::KEY_FROM_EMAIL)->first()->value,
+                    Setting::ofGroup(Setting::GROUP_MAIL)->withKey(Setting::KEY_FROM_NAME)->first()->value);
     }
 
     /**
