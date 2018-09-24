@@ -17,8 +17,8 @@ class SendGrid extends Mailer
         $this->email = new Mail();
         $this->response = null;
 
-        $this->email->setFrom(Setting::ofGroup(Setting::GROUP_MAIL)->withKey(Setting::KEY_FROM_EMAIL)->first()->value,
-                              Setting::ofGroup(Setting::GROUP_MAIL)->withKey(Setting::KEY_FROM_NAME)->first()->value);
+        $this->email->setFrom(Setting::getValue(Setting::GROUP_MAIL, Setting::KEY_FROM_EMAIL),
+                              Setting::getValue(Setting::GROUP_MAIL, Setting::KEY_FROM_NAME));
     }
 
     /**

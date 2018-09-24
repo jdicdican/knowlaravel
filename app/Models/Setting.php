@@ -21,7 +21,19 @@ class Setting extends Model
 
     /**
      * Include settings of a given group
-     * 
+     *
+     * @param string $group
+     * @param string $key
+     * @return string
+     */
+     public static function getValue($group, $key)
+    {
+        return self::ofGroup($group)->withKey($key)->first()->value;
+    }
+
+    /**
+     * Include settings of a given group
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string $group
      * @return \Illuminate\Database\Eloquent\Builder
@@ -33,7 +45,7 @@ class Setting extends Model
 
     /**
      * Include settings containing the given key
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string $key
      * @return \Illuminate\Database\Eloquent\Builder
