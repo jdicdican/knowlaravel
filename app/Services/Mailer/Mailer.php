@@ -2,6 +2,8 @@
 
 namespace App\Services\Mailer;
 
+use App\Services\Mailer\SendGrid;
+
 abstract class Mailer
 {
     /**
@@ -18,10 +20,30 @@ abstract class Mailer
      */
     protected $response;
 
-    public abstract function from($email, $name = null);
-    public abstract function to($email, $name = null);
-    public abstract function subject($subject);
-    public abstract function content($content);
+    /**
+     * Mail driver identifier constant
+     * 
+     * @var integer
+     */
+    const SENDGRID = 1;
+
+    /**
+     * Create a new mailer object using the specified driver
+     * 
+     * @param int $driver
+     * @return App\Services\Mailer\SendGrid|null
+     */
+    public static function create($driver)
+    {
+        switch ($driver) {
+            case self::SENDGRID:
+                return new SendGrid();
+                break;
+            default:
+                return null;
+        }
+    }
+
     public abstract function send($data, $log = false);
     protected abstract function massSetEmailData($data);
 }

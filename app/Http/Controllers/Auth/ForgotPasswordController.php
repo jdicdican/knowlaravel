@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use App\Models\Auth\PasswordReset;
-use App\Services\Mailer\SendGrid;
+use App\Services\Mailer\Mailer;
 use App\Services\Security\TokenDependent;
 
 class ForgotPasswordController extends Controller
@@ -57,7 +57,7 @@ class ForgotPasswordController extends Controller
             'token' => PasswordReset::generateToken($token_alias),
         ]);
 
-        $email = new SendGrid;
+        $mailer = Mailer::create(Mailer::SENDGRID);
         $data = [
             "from" => [
                 "email" => "noreply@knowlaravel.com",
@@ -72,7 +72,7 @@ class ForgotPasswordController extends Controller
                           <a href='".route('password.reset', ['token' => $token_alias])."'>Reset Password</a>"
         ];
 
-        $response = $email->send($data);
+        $response = $mailer->send($data);
         
         return $response;
     }
