@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use App\Models\Auth\PasswordReset;
+use App\Models\EmailLog;
+use App\Services\Mailer\Mailer;
+use App\Services\Security\TokenDependent;
 
 class ForgotPasswordController extends Controller
 {
@@ -21,6 +24,7 @@ class ForgotPasswordController extends Controller
     */
 
     use SendsPasswordResetEmails;
+    use TokenDependent;
 
     /**
      * Create a new controller instance.
@@ -34,7 +38,7 @@ class ForgotPasswordController extends Controller
 
     /**
      * Send a reset link to the given user.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -43,30 +47,36 @@ class ForgotPasswordController extends Controller
         $this->validateEmail($request);
 
         $email_address = $request->get('email');
-        $token_alias = hash('sha256', $email_address.date("D M d, Y G:i"));
+        $token_alias = $this->generateToken($email_address);
 
-        PasswordReset::where('email', 'like', $email_address)->delete(); // Make sure a token for the specified email is non-existent
+        // Make sure a token for the specified email is non-existent.
+        // This ensures that the specified email address will not have
+        // more than one (1) tokens.
+        PasswordReset::where('email', 'like', $email_address)->delete();
         PasswordReset::create([
             'email' => $email_address,
             'token' => PasswordReset::generateToken($token_alias),
         ]);
 
-        $email = new \SendGrid\Mail\Mail(); 
-        $email->setFrom("noreply@knowlaravel.com", "Password Reset");
-        $email->setSubject("Reset your password");
-        $email->addTo($request->get('email'));
-        $email->addContent(
-            "text/html", "<a href='".route('password.reset', ['token' => $token_alias])."'>Click here to reset your password</a>"
-        );
-        
-        $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
-        try {
-            $response = $sendgrid->send($email);
-            $status = "You will receive a reset link if the email address you provided is correct.";
-        } catch (Exception $e) {
-            $status = $e->getMessage();
-        }
+        $mailer = Mailer::create();
+        $data = [
+            "type" => EmailLog::PASSWORD_RESET,
+            "status" => EmailLog::SENT,
+            "from" => [
+                "email" => "noreply@knowlaravel.com",
+                "name" => "Know Laravel"
+            ],
+            "to" => [
+                "email" => $email_address
+            ],
+            "subject" => "Reset your password",
+            "content" => "<p>You requested to reset your password.</p>
+                          <p>Just click on the link below:</p>
+                          <a href='".route('password.reset', ['token' => $token_alias])."'>Reset Password</a>"
+            ];
 
-        return back()->with('status', $status);
+        $response = $mailer->send($data);
+
+        return $response;
     }
 }
