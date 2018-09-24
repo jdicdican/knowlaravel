@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use App\Models\Auth\PasswordReset;
+use App\Models\EmailLog;
 use App\Services\Mailer\Mailer;
 use App\Services\Security\TokenDependent;
 
@@ -37,7 +38,7 @@ class ForgotPasswordController extends Controller
 
     /**
      * Send a reset link to the given user.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -59,6 +60,8 @@ class ForgotPasswordController extends Controller
 
         $mailer = Mailer::create(Mailer::SENDGRID);
         $data = [
+            "type" => EmailLog::PASSWORD_RESET,
+            "status" => EmailLog::SENT,
             "from" => [
                 "email" => "noreply@knowlaravel.com",
                 "name" => "Know Laravel"
@@ -70,10 +73,10 @@ class ForgotPasswordController extends Controller
             "content" => "<p>You requested to reset your password.</p>
                           <p>Just click on the link below:</p>
                           <a href='".route('password.reset', ['token' => $token_alias])."'>Reset Password</a>"
-        ];
+            ];
 
         $response = $mailer->send($data);
-        
+
         return $response;
     }
 }

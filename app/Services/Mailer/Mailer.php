@@ -8,14 +8,14 @@ abstract class Mailer
 {
     /**
      * The email object
-     * 
+     *
      * @var \SendGrid\Mail\Mail
      */
     protected $email;
 
     /**
      * The API's response after sending the email
-     * 
+     *
      * @var \SendGrid\Response
      */
     protected $response;

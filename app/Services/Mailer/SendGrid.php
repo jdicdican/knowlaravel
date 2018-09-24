@@ -6,11 +6,12 @@ use SendGrid as API;
 use SendGrid\Mail\Mail;
 use App\Services\Security\TokenDependent;
 use App\Models\Setting;
+use App\Models\EmailLog;
 
 class SendGrid extends Mailer
 {
     use TokenDependent;
-    
+
     function __construct()
     {
         $this->email = new Mail();
@@ -22,12 +23,12 @@ class SendGrid extends Mailer
 
     /**
      * Send the email
-     * 
+     *
      * @param array|null $data
      * @param bool $log
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function send($data = null, $log = false)
+    public function send($data = null, $log = true)
     {
         // If data is passed to send, we will assume that the mail
         // object was not yet set using the the content builder. Thus,
@@ -47,8 +48,12 @@ class SendGrid extends Mailer
             $this->response = $api->send($this->email);
         } catch (Exception $e) {
             $status = $e->getMessage();
+        } finally {
+            if( $log ) {
+                $this->log($data, $sg_mail_id);
+            }
         }
-        
+
         return back()->with('status', isset($status)
             ? $status
             : "You will receive a reset link if the email address you provided is correct.");
@@ -56,7 +61,7 @@ class SendGrid extends Mailer
 
     /**
      * Set the state of the email object
-     * 
+     *
      * @param array $data
      * @return void
      */
@@ -83,5 +88,21 @@ class SendGrid extends Mailer
         if (isset($data["content"])) {
             $this->email->addContent("text/html", $data["content"]);
         }
+    }
+
+    public function log($data, $sg_mail_id)
+    {
+
+        EmailLog::create([
+            'type' => $data['type'],
+            'from_name' => isset($data['from']['name']) ? $data['from']['name'] : null,
+            'from_email' => $data['from']['email'],
+            'to_name' => isset($data['to']['name']) ? $data['to']['name'] : null,
+            'to_email' => $data['to']['email'],
+            'subject' =>  $data['subject'],
+            'message' => $data['content'],
+            'status' => $data['status'],
+            'mail_id' => $sg_mail_id
+        ]);
     }
 }
