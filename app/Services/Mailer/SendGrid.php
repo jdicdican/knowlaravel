@@ -12,15 +12,6 @@ class SendGrid extends Mailer
 {
     use TokenDependent;
 
-    function __construct()
-    {
-        $this->email = new Mail();
-        $this->response = null;
-
-        $this->email->setFrom(Setting::getValue(Setting::GROUP_MAIL, Setting::KEY_FROM_EMAIL),
-                              Setting::getValue(Setting::GROUP_MAIL, Setting::KEY_FROM_NAME));
-    }
-
     /**
      * Send the email
      *
@@ -28,17 +19,15 @@ class SendGrid extends Mailer
      * @param bool $log
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function send($data = null, $log = true)
+    public function send($data, $log = true)
     {
-        // If data is passed to send, we will assume that the mail
-        // object was not yet set using the the content builder. Thus,
-        // we have to mass its members.
-        if (is_array($data)) {
-            $this->massSetEmailData($data);
-        }
+        // Always create a new Mail object whenever trying to send.
+        // Assign values to the object afterwards.
+        $this->email = new Mail();
+        $this->massSetEmailData($data);
 
         // We need to create a custom mail id for the SendGrid mail
-        // object for logging purposes. This custom id will reflect
+        // object (for logging purposes). This custom id will reflect
         // on SendGrid's mail requests.
         $sg_mail_id = $this->generateToken();
         $this->email->addCustomArg("sg_mail_id", $sg_mail_id);
@@ -72,6 +61,9 @@ class SendGrid extends Mailer
             $from_name = isset($data["from"]["name"]) ? $data["from"]["name"] : null;
 
             $this->email->setFrom($from_email, $from_name);
+        } else {
+            $this->email->setFrom(Setting::getValue(Setting::GROUP_MAIL, Setting::KEY_FROM_EMAIL),
+                                  Setting::getValue(Setting::GROUP_MAIL, Setting::KEY_FROM_NAME));
         }
 
         if (isset($data["to"]["email"])) {

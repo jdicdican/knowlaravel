@@ -18,6 +18,7 @@ class Setting extends Model
     const GROUP_MAIL = 'mail';
     const KEY_FROM_EMAIL = 'from_email';
     const KEY_FROM_NAME = 'from_name';
+    const KEY_DRIVER_DEFAULT = 'driver_default';
 
     /**
      * Include settings of a given group
@@ -26,7 +27,7 @@ class Setting extends Model
      * @param string $key
      * @return string
      */
-     public static function getValue($group, $key)
+    public static function getValue($group, $key)
     {
         return self::ofGroup($group)->withKey($key)->first()->value;
     }

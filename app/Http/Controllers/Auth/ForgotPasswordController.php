@@ -58,7 +58,7 @@ class ForgotPasswordController extends Controller
             'token' => PasswordReset::generateToken($token_alias),
         ]);
 
-        $mailer = Mailer::create(Mailer::SENDGRID);
+        $mailer = Mailer::create();
         $data = [
             "type" => EmailLog::PASSWORD_RESET,
             "status" => EmailLog::SENT,

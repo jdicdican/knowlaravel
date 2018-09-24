@@ -3,6 +3,7 @@
 namespace App\Services\Mailer;
 
 use App\Services\Mailer\SendGrid;
+use App\Models\Setting;
 
 abstract class Mailer
 {
@@ -25,7 +26,8 @@ abstract class Mailer
      * 
      * @var integer
      */
-    const SENDGRID = 1;
+    const SENDGRID = 'sendgrid';
+    const MANDRILL = 'mandrill';
 
     /**
      * Create a new mailer object using the specified driver
@@ -33,8 +35,11 @@ abstract class Mailer
      * @param int $driver
      * @return App\Services\Mailer\SendGrid|null
      */
-    public static function create($driver)
+    public static function create($driver = null)
     {
+        if (!$driver) {
+            $driver = Setting::getValue(Setting::GROUP_MAIL, Setting::KEY_DRIVER_DEFAULT);
+        }
         switch ($driver) {
             case self::SENDGRID:
                 return new SendGrid();
